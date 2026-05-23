@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Form Demo - Server Side Programming</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .demo-container {
+            max-width: 600px;
+            margin: 50px auto;
+        }
+        .info-box {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="info-box">
+            <h3>🌐 FRONTEND (This page)</h3>
+            <p>This form runs in YOUR browser. When you submit:</p>
+            <ol>
+                <li>Browser collects data from inputs below</li>
+                <li>Browser sends a <strong>POST request</strong> to the server</li>
+                <li>Browser waits for server response</li>
+            </ol>
+        </div>
+
+        <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <h2>📝 Simple Form Submission Demo</h2>
+            <p>This form demonstrates how data travels from <strong>Frontend → Server → Backend → Response</strong></p>
+            
+            <form action="simple_processor.php" method="POST">
+                <div class="form-group">
+                    <label>Your Name *</label>
+                    <input type="text" name="user_name" placeholder="e.g., Joy Karani" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Your Favorite Technology *</label>
+                    <select name="technology" required>
+                        <option value="">Select one...</option>
+                        <option value="PHP">PHP</option>
+                        <option value="JavaScript">JavaScript</option>
+                        <option value="MySQL">MySQL</option>
+                        <option value="HTML/CSS">HTML/CSS</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Message (Optional)</label>
+                    <textarea name="message" rows="3" placeholder="What have you learned so far?"></textarea>
+                </div>
+                
+                <button type="submit">🚀 SUBMIT FORM (Sends POST Request to Server)</button>
+            </form>
+        </div>
+        
+        <div class="info-box" style="margin-top: 20px; background: #f0f0f0;">
+            <h3>🖥️ What happens when you click SUBMIT?</h3>
+            <p><strong>1. REQUEST:</strong> Browser sends POST request to <code>simple_processor.php</code><br>
+            <strong>2. BACKEND:</strong> PHP script on server processes your data<br>
+            <strong>3. RESPONSE:</strong> Server sends back a personalized response<br>
+            <strong>4. DISPLAY:</strong> Browser shows the response</p>
+        </div>
+    </div>
+</body>
+</html>
