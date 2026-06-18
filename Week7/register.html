@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Student Task Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .register-wrapper {
+            max-width: 520px;
+            margin: 40px auto;
+        }
+        .banner-icon {
+            font-size: 40px;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%230f172a' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+            color: #111827;
+        }
+        .role-hint {
+            font-size: 13px;
+            color: #334155;
+            margin-top: 4px;
+        }
+        .role-hint span {
+            font-weight: 700;
+        }
+        .role-hint .admin { color: #c53030; }
+        .role-hint .manager { color: #f59e0b; }
+        .role-hint .student { color: #16a34a; }
+    </style>
+</head>
+<body>
+    <div class="register-wrapper">
+        <div class="card-with-banner">
+            <!-- BANNER -->
+            <div class="banner">
+                <span class="banner-icon">📋</span>
+                <h1>STUDENT TASK MANAGER</h1>
+                <p>Register to manage your tasks efficiently</p>
+            </div>
+            
+            <!-- FORM BODY -->
+            <div class="card-body">
+                <form id="registerForm" action="process_registration.php" method="POST">
+                    <div class="form-group">
+                        <label>Full Name <span class="required">*</span></label>
+                        <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required>
+                        <div class="error-message" id="nameError">Please enter your full name</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email Address <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                        <div class="error-message" id="emailError">Please enter a valid email address</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Password <span class="required">*</span></label>
+                        <input type="password" id="password" name="password" placeholder="Min 6 characters" required>
+                        <div class="password-strength" id="strengthBar"></div>
+                        <div class="strength-text" id="strengthText"></div>
+                        <div class="error-message" id="passwordError">Password must be at least 6 characters</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Confirm Password <span class="required">*</span></label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter password" required>
+                        <div class="error-message" id="confirmError">Passwords do not match</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Select Role <span class="required">*</span></label>
+                        <select name="role_id" required>
+                            <option value="3">🎓 Student</option>
+                            <option value="2">📊 Manager</option>
+                            <option value="1">⚙️ Admin</option>
+                        </select>
+                        <div class="role-hint">
+                            <span class="student">🎓 Student</span>: View only your tasks &nbsp;|&nbsp;
+                            <span class="manager">📊 Manager</span>: Assign tasks to students &nbsp;|&nbsp;
+                            <span class="admin">⚙️ Admin</span>: Full system access
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Create Account</button>
+                </form>
+
+                <div class="link">
+                    Already have an account? <a href="login.php" class="btn-secondary">Login here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('registerForm');
+        const fullname = document.getElementById('fullname');
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirmPassword');
+
+        fullname.addEventListener('blur', function() {
+            document.getElementById('nameError').style.display = this.value.trim() === '' ? 'block' : 'none';
+        });
+
+        email.addEventListener('blur', function() {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            document.getElementById('emailError').style.display = !emailRegex.test(this.value) ? 'block' : 'none';
+        });
+
+        password.addEventListener('keyup', function() {
+            const strengthBar = document.getElementById('strengthBar');
+            const strengthText = document.getElementById('strengthText');
+            const value = this.value;
+            
+            if(value.length === 0) {
+                strengthBar.className = 'password-strength';
+                strengthText.textContent = '';
+                strengthText.className = 'strength-text';
+                return;
+            }
+            
+            let strength = 'weak';
+            let message = '❌ Weak - need at least 6 characters';
+            let className = 'weak';
+            
+            if(value.length >= 8 && /[A-Z]/.test(value) && /[0-9]/.test(value)) {
+                strength = 'strong';
+                message = '✓ Strong password!';
+                className = 'strong';
+            } else if(value.length >= 6) {
+                strength = 'medium';
+                message = '⚠️ Medium - add uppercase letters and numbers';
+                className = 'medium';
+            }
+            
+            strengthBar.className = `password-strength strength-${strength}`;
+            strengthText.textContent = message;
+            strengthText.className = `strength-text ${className}`;
+        });
+
+        confirmPassword.addEventListener('keyup', function() {
+            const error = document.getElementById('confirmError');
+            if(this.value.length > 0 && this.value !== password.value) {
+                error.style.display = 'block';
+            } else {
+                error.style.display = 'none';
+            }
+        });
+
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+            
+            if(fullname.value.trim() === '') {
+                document.getElementById('nameError').style.display = 'block';
+                isValid = false;
+            }
+            
+            if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
+            }
+            
+            if(password.value.length < 6) {
+                document.getElementById('passwordError').style.display = 'block';
+                isValid = false;
+            }
+            
+            if(confirmPassword.value !== password.value) {
+                document.getElementById('confirmError').style.display = 'block';
+                isValid = false;
+            }
+            
+            if(!isValid) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
