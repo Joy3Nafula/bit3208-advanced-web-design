@@ -1,0 +1,8 @@
+Week 7: Multi-User Role Management System
+
+This folder contains the Week 6 implementation with:
+- 3 tables in 3NF (roles, users, tasks)
+- Role-based access control (Admin, Manager, Student)
+- Session management with 7-day cookies
+- User management and task assignment features
+password hashing,rbac and user login validation
